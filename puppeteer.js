@@ -7,7 +7,6 @@ const puppeteer = require('puppeteer');
 
     const client = await page.target().createCDPSession();
     await client.send('Network.enable');
-    await client.send('Page.enable'); // Needed for frame tracking
     await client.send('Network.setCacheDisabled', {cacheDisabled: true});
     await client.send('Network.setBypassServiceWorker', {bypass: true});
 
@@ -22,10 +21,6 @@ const puppeteer = require('puppeteer');
             url,
         });
     });
-
-    // client.on('Page.frameNavigated', event => {
-    //     console.log(event);
-    // });
 
     client.on('Network.responseReceived', async event => {
         const { requestId, response } = event;
